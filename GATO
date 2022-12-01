@@ -1,0 +1,563 @@
+ #include <avr/wdt.h> // libreria que ayuda a la funcion de reset()
+int gato[9] = {0}; // arreglo del gato
+
+// Autor: ERICK OLIVAS
+
+
+int encendido, push; // variables de los botones
+int turno = 1; // variable de turno
+boolean ganar1 = false, ganar2 = false; // variables de victoria
+int i = 0, valorCol = 0 ; // variable de contador y variable que valida si un valor es colocado
+void setup() {
+  pinMode(0, OUTPUT);
+  pinMode(1, OUTPUT);
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(A0, OUTPUT);
+  pinMode(A1, OUTPUT);
+  pinMode(A2, OUTPUT);
+  pinMode(A3, OUTPUT);
+  pinMode(A5, OUTPUT);
+  pinMode(13, INPUT);
+  pinMode(12, INPUT);      // inicializando los pines
+}
+void EncenderT1(){ // metodo que prende constantemente el LED
+   digitalWrite(i, HIGH);
+       delay (100);
+       
+       digitalWrite(i, LOW);
+       delay (100);
+  
+  }
+
+void Contar(){           // metodo que hace que el jugador se mueva a traves del gato, modifica el valor de i
+    encendido = digitalRead(13);
+    if(encendido == HIGH){
+      i++;
+      if( i == 9){
+        i = 0;
+        }
+        delay(100);
+      }
+}
+
+void Presionado(){     // metodo que hace que el jugador coloque un valor en el gato
+  push = digitalRead(12);
+   if(push == HIGH){
+    digitalWrite(i, HIGH);
+        gato[i] = 1;
+        valorCol = 1;
+        i = 9;
+        delay(300);
+       }
+  }
+void loop() {
+
+ while(turno == 1){  // empieza el turno del jugador 1
+  Validar();    // valida si ya hay un valor colocado en la posicion
+      while(i == 0) { // empieza el while donde ejecuta los métodos mientras i valga su posicion
+      EncenderT1();
+       Contar();
+       Presionado();
+         if(valorCol == 1){    // si un valor es colocado en el método Presionado(), entonces ejecuta una sucesion de sentencias
+        recorrer();    // Valida si el jugador completó una línea de 3 y ganó
+        valorCol = 0; // valCol reinicia su valor una vez que se ejecuto el if inicial
+        turno = 2;    // Ya que el jugador ya hizo su jugada, el turno, pasara a ser de otro jugador
+        }
+        SinEspacios();  // valida si ya no se pueden hacer movimientos en el gato
+     }
+       Validar();
+      while(i == 1) {
+        EncenderT1();
+        Contar();
+        Presionado();
+        if(valorCol == 1){
+        recorrer();
+        valorCol = 0;
+        turno = 2;
+        }
+         SinEspacios();
+        }
+       Validar();
+      while(i == 2) {
+       EncenderT1();
+       Contar();
+       Presionado();
+         if(valorCol == 1){
+        recorrer();
+        valorCol = 0;
+        turno = 2;
+        }
+      SinEspacios();
+      
+     }
+       Validar();
+         while(i == 3) {
+       EncenderT1();
+       Contar();
+       Presionado();
+      if(valorCol == 1){
+        recorrer();
+        valorCol = 0;
+        turno = 2;
+        }
+       SinEspacios();
+
+     }
+       Validar();
+       while(i == 4) {
+        EncenderT1();
+       Contar();
+       Presionado();
+      if(valorCol == 1){
+        recorrer();
+        valorCol = 0;
+        turno = 2;
+        }
+       SinEspacios();
+     }  
+       Validar();
+      while(i == 5) {
+       EncenderT1();
+       Contar();
+       Presionado();
+      if(valorCol == 1){
+        recorrer();
+        valorCol = 0;
+        turno = 2;
+        }
+        SinEspacios();
+     }
+       Validar();
+      while(i == 6) {
+       EncenderT1();
+       Contar();
+       Presionado();
+      if(valorCol == 1){
+        recorrer();
+        valorCol = 0;
+        turno = 2;
+        }
+       SinEspacios();
+     }
+       Validar();
+      while(i == 7) {
+       EncenderT1();
+       Contar();
+       Presionado();
+      if(valorCol == 1){
+        recorrer();
+        valorCol = 0;
+        turno = 2;
+        }
+      SinEspacios();
+     }   
+       Validar();
+      while(i == 8) {
+    
+       EncenderT1();
+       Contar();
+       Presionado();
+      if(valorCol == 1){
+        recorrer();    
+        valorCol = 0;
+        turno = 2;
+        }
+        SinEspacios();
+     }
+     
+    i = 0; // reinicia el contador al salir del while del turno del jugador 1
+   
+   }
+
+   
+   ////////////////////// cambio 
+   
+  while( turno == 2){ // ahora es turno del jugador 2
+     Validar(); 
+    while(i == 0){  // la lineas de codigo hacen la misma función como todas
+       digitalWrite(9, HIGH);
+       delay (100);
+       
+       digitalWrite(9, LOW);
+       delay (100);
+       Contar();
+         push = digitalRead(12);
+          if(push == HIGH){
+        digitalWrite(9, HIGH);
+        gato[i] = 2;
+        valorCol = 1;
+        i = 9;
+        
+        delay(300);
+        if(valorCol == 1){
+        recorrer2();
+        turno = 1;
+         valorCol = 0;
+        }
+     
+       }
+      }
+        Validar();
+      while(i == 1){
+       digitalWrite(10, HIGH);
+       delay (100);
+       
+       digitalWrite(10, LOW);
+       delay (100);
+       Contar();
+        push = digitalRead(12);
+          if(push == HIGH){
+        digitalWrite(10, HIGH);
+        gato[i] = 2;
+        valorCol = 1;
+        i = 9;
+        delay(300);
+        if(valorCol == 1){
+        recorrer2();
+        turno = 1;
+        valorCol = 0;
+        }
+     
+       }
+      }
+        Validar();
+        while(i == 2){
+       digitalWrite(11, HIGH);
+       delay (100);
+       
+       digitalWrite(11, LOW);
+       delay (100);
+       Contar();
+        push = digitalRead(12);
+         if(push == HIGH){
+       digitalWrite(11, HIGH);
+        gato[i] = 2;
+        valorCol = 1;
+        i = 9;
+        delay(300);
+        if(valorCol == 1){
+        recorrer2();
+        turno = 1;
+        valorCol = 0;
+        }
+        
+      }
+      
+    }
+      Validar();
+       while(i == 3){
+       digitalWrite(A5, HIGH);
+       delay (100);
+       
+       digitalWrite(A5, LOW);
+       delay (100);
+       Contar();
+        push = digitalRead(12);
+         if(push == HIGH){
+       digitalWrite(A5, HIGH);
+        gato[i] = 2;
+        valorCol = 1;
+        i = 9;
+        delay(300);
+          if(valorCol == 1){
+        recorrer2();
+       turno = 1;
+        valorCol = 0;
+        }
+        
+      }
+      
+    }
+      Validar();
+        while(i == 4){
+       digitalWrite(A4, HIGH);
+       delay (100);
+       
+       digitalWrite(A4, LOW);
+       delay (100);
+       Contar();
+        push = digitalRead(12);
+         if(push == HIGH){
+       digitalWrite(A4, HIGH);
+        gato[i] = 2;
+        valorCol = 1;
+        i = 9;
+        delay(300);
+          if(valorCol == 1){
+        recorrer2();
+        turno = 1;
+        valorCol = 0;
+        }
+     
+      }
+      
+    }
+      Validar();
+     while(i == 5){
+       digitalWrite(A3, HIGH);
+       delay (100);
+       
+       digitalWrite(A3, LOW);
+       delay (100);
+       Contar();
+        push = digitalRead(12);
+         if(push == HIGH){
+       digitalWrite(A3, HIGH);
+        gato[i] = 2;
+        valorCol = 1;
+        i = 9;
+        delay(300);
+          if(valorCol == 1){
+        recorrer2();
+       turno = 1;
+        valorCol = 0;
+        }
+       
+      }
+      
+    }
+      Validar();
+      while(i == 6){
+       digitalWrite(A2, HIGH);
+       delay (100);
+       
+       digitalWrite(A2, LOW);
+       delay (100);
+       Contar();
+        push = digitalRead(12);
+         if(push == HIGH){
+       digitalWrite(A2, HIGH);
+        gato[i] = 2;
+        valorCol = 1;
+        i = 9;
+        delay(300);
+          if(valorCol == 1){
+        recorrer2();
+        turno = 1;
+        valorCol = 0;
+        }
+      
+      }
+      
+    }
+      Validar();
+      while(i == 7){
+       digitalWrite(A1, HIGH);
+       delay (100);
+       
+       digitalWrite(A1, LOW);
+       delay (100);
+       Contar(); 
+        push = digitalRead(12);
+         if(push == HIGH){
+       digitalWrite(A1, HIGH);
+        gato[i] = 2;
+        valorCol = 1;
+        i = 9;
+        delay(300);
+          if(valorCol == 1){
+        recorrer2();
+        turno = 1;
+        valorCol = 0;
+        }
+     
+      }
+      
+    }
+      Validar();
+      while(i == 8){
+       digitalWrite(A0, HIGH);
+       delay (100);
+       
+       digitalWrite(A0, LOW);
+       delay (100);
+       Contar(); 
+        push = digitalRead(12);
+         if(push == HIGH){
+       digitalWrite(A0, HIGH);
+        gato[i] = 2;
+        valorCol = 1;
+        i = 9;
+        delay(300);
+          if(valorCol == 1){
+        recorrer2();
+        turno = 1;
+        valorCol = 0;
+        }
+        
+      }
+      
+    }
+     i = 0; // nuevamente se reinicia el contador
+  }
+    
+ }
+
+void recorrer(){
+  if(gato[0] == 1 && gato[1] == 1 && gato[2] == 1){
+     ganar1 = true;
+  
+    }                                                                             
+  if(gato[3] == 1 && gato[4] == 1 && gato[5] == 1){
+     ganar1 = true;
+     
+    }
+    if(gato[6] == 1 && gato[7] == 1 && gato[8] == 1){
+     ganar1 = true;
+ 
+    }
+  if(gato[0] == 1 && gato[3] == 1 && gato[6] == 1){
+     ganar1 = true;
+   
+    }
+    if(gato[1] == 1 && gato[4] == 1 && gato[7] == 1){
+     ganar1 = true;
+   
+    }
+    if(gato[2] == 1 && gato[5] == 1 && gato[8] == 1){
+     ganar1 = true;
+   
+    }
+    if(gato[0] == 1 && gato[4] == 1 && gato[8] == 1){
+    ganar1 = true;
+   
+    }
+    if(gato[6] == 1 && gato[4] == 1 && gato[2] == 1){
+     ganar1 = true;
+    
+    }
+    if(ganar1 == true){
+    
+      digitalWrite(9, LOW);
+      digitalWrite(10, LOW);
+      digitalWrite(11, LOW);
+      digitalWrite(A0, LOW);
+      digitalWrite(A1, LOW);
+      digitalWrite(A2, LOW);
+      digitalWrite(A3, LOW);
+      digitalWrite(A4, LOW);
+      digitalWrite(A5, LOW);
+
+
+      
+   for(int x = 0; x < 3; x++){
+      for(int j = 0;j < 9; j++){
+        digitalWrite(j, HIGH);
+        delay(50);
+          }
+      for(int j = 0;j < 9; j++){
+        digitalWrite(j, LOW);
+        delay(50);
+          }
+          delay(200);
+      }
+         reset();
+  
+   }
+
+}
+void recorrer2(){
+  if(gato[0] == 2 && gato[1] == 2 && gato[2] == 2){
+     ganar2 = true;
+       
+    }
+  if(gato[3] == 2 && gato[4] == 2 && gato[5] == 2){
+     ganar2 = true;
+   
+    }
+    if(gato[6] == 2 && gato[7] == 2 && gato[8] == 2){
+     ganar2 = true;
+      
+    }
+  if(gato[0] == 2 && gato[3] == 2 && gato[6] == 2){
+     ganar2 = true;
+  
+    }
+    if(gato[1] == 2 && gato[4] == 2 && gato[7] == 2){
+     ganar2 = true;
+       
+    }
+    if(gato[2] == 2 && gato[5] == 2 && gato[8] == 2){
+     ganar2 = true;
+
+    }
+    if(gato[0] == 2 && gato[4] == 2 && gato[8] == 2){
+     ganar2 = true;
+    
+    }
+    if(gato[6] == 2 && gato[4] == 2 && gato[2] == 2){
+     ganar2 = true;
+    
+    }
+    if(ganar2 == true){
+      int x;
+    for(int h = 0; h < 9; h++){ // apaga los LEDS del jugador perdedor
+        digitalWrite(h, LOW);
+      }
+      
+     for(x = 0; x < 8; x++){   // y muestra una secuencia de victoria
+      digitalWrite(9, HIGH);
+      digitalWrite(10, HIGH);
+      digitalWrite(11, HIGH);
+      digitalWrite(A0, HIGH);
+      digitalWrite(A1, HIGH);
+      digitalWrite(A2, HIGH);
+      digitalWrite(A3, HIGH);
+      digitalWrite(A4, HIGH);
+      digitalWrite(A5, HIGH);
+      delay(200);
+       digitalWrite(9, LOW);
+      digitalWrite(10, LOW);
+      digitalWrite(11, LOW);
+      digitalWrite(A0, LOW);
+      digitalWrite(A1, LOW);
+      digitalWrite(A2, LOW);
+      digitalWrite(A3, LOW);
+      digitalWrite(A4, LOW);
+      digitalWrite(A5, LOW);
+      delay(200);
+      }
+        reset();
+     
+   }
+}
+
+void Validar(){ // busca si el valor es diferente a 0, dicho de otra forma, busca si el valor ya está ocupado
+  if( gato[i] != 0){
+     i++;
+    }
+}  
+  
+
+
+void reset(){ // función que fuerza al arduino a reiniciarse
+  wdt_enable(WDTO_15MS);
+  while(1){}
+  }
+void SinEspacios(){ // busca si el gato se quedó sin espacios
+  boolean sines = true;  // se toma por hecho de que sí
+  
+  for(int v = 0; v < 9; v++){ // y en esta función, se busca en el arreglo del gato si hay algún 0, de ser el caso, ahora sines el falso
+    if(gato[v] == 0){
+      sines = false;
+      continue;
+      } 
+    }
+  if( sines == true){ // si la función anterior no es negada, entonces resetea el software
+
+    
+    reset();
+    
+    }
+  }
+  
+  
